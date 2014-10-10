@@ -1,0 +1,16 @@
+{
+  "name": "serious-backup-device-sdk",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Jason Livesay",
+  "license": "MIT",
+  "dependencies": {
+    "should": "",
+    "sinon": "",
+    "ofuda":"git://github.com/Swizec/ofuda.git",
+    "fs-extra":"",
+    "bit-sync": "",
+    "jade": "~1.7.0",
+    "walkdir":""
+  }
+}
