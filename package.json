@@ -4,6 +4,7 @@
   "description": "",
   "author": "Jason Livesay",
   "license": "MIT",
+  "main": "serious.js",
   "dependencies": {
     "should": "",
     "sinon": "",
