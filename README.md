@@ -10,7 +10,7 @@ Returns backup key in callback.
 
 ### backupStatus(key)
 
-### generalStatus(key)
+### generalStatus()
 
 ### QRImageLink(key)
 
