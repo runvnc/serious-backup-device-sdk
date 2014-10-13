@@ -1,15 +1,18 @@
 var https = require('https')
+  , path = require('path')
+  , log = require('./simplelog')
   , Ofuda = require('ofuda');
 
 var opts = {}, ofuda = {}, http_options = {};
 
 var httpClient = https;
+var initialized = false;
 
 init = function() {
   ofuda = new Ofuda( { headerPrefix:'Srs', 
                          hash: 'sha1', 
                          serviceLabel: 'MBO', 
-                         debug: true } );
+                         debug: false } );
 
   credentials = { accessKeyId: opts.accessKeyId, 
                   accessKeySecret: opts.accessKeySecret };
@@ -23,6 +26,7 @@ init = function() {
       }
       //'Content-MD5': 'ee930827ccb58cd846ca31af5faa3634'
   };
+  log.setDebug(false);
 }
 
 config = function(options) {
@@ -32,8 +36,9 @@ config = function(options) {
 
 readConfig = function(fname) {
   if (!fname) {
-    fname = './config.json';
+    fname = __dirname+'/config.json';
   }
+  log.debug("Client SDK reading config from " + path.resolve(fname));
   opts = require(fname);
   init();
 }
@@ -47,10 +52,23 @@ doReq = function(method, entity, id, data, cb) {
   signedOptions = ofuda.signHttpRequest(credentials, http_options);
 
   var req = httpClient.request(signedOptions, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
-    var resData = JSON.parse(res.body);
-    cb(resData);
+    res.setEncoding('utf8');
+    var body = "";
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+    res.on('end', function() {
+      try {
+        var resData = JSON.parse(body);
+      } catch (e) {
+        console.log("Unable to parse response:");
+        console.log(e.message);
+        console.log("response body is");
+        console.log(body);
+        var resData = e;
+      }
+      cb(resData);
+     });
   });
 
   if (data) {
@@ -60,25 +78,47 @@ doReq = function(method, entity, id, data, cb) {
   }
 }
 
-backup = function() {
-  
-  // returns key;
+checkInit = function(cb) {
+  if (!initialized) {
+    readConfig();  
+    cb();
+  } else {
+    cb();
+  }
+}
+
+backup = function(cb) {
+  checkInit(function() {
+    doReq('POST', 'backup', null, null, function(res) {
+      cb(res.key);
+    });
+  });
 }
 
 listBackups = function(key) {
-      
+  checkInit(function() {
+
+  });    
 }
 
-getBackupStatus = function(key) {
-    
+backupStatus = function(key) {
+  checkInit(function() {
+
+  });    
 }
 
-getGeneralStatus = function() {
-  
+generalStatus = function(cb) {
+  checkInit(function() {
+    doReq('GET', 'stats', null,null,function(res) {
+      cb(res);        
+    });
+  });
 }
 
-getQRImageLink = function(key) {
+QRImageLink = function(key) {
+  checkInit(function() {
 
+  });
 }
 
 exports.backup = backup;
