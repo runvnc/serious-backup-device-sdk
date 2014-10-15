@@ -115,12 +115,22 @@ generalStatus = function(cb) {
   });
 }
 
-QRImageLink = function(key) {
+QRImageLink = function(key, cb) {
   checkInit(function() {
 
   });
 }
 
+createUser = function(userdata, cb) {
+  // userData contains username
+  // and passphrase
+  checkInit(function() {
+      
+
+  });
+}
+
+exports.createUser = createUser;
 exports.backup = backup;
 exports.listBackups = listBackups;
 exports.backupStatus = backupStatus;
