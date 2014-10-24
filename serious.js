@@ -1,21 +1,13 @@
 var https = require('https')
   , path = require('path')
   , log = require('./simplelog')
-  , Ofuda = require('ofuda');
 
-var opts = {}, ofuda = {}, http_options = {};
+var opts = {}, http_options = {};
 
 var httpClient = https;
 var initialized = false;
 
 init = function() {
-  ofuda = new Ofuda( { headerPrefix:'Srs', 
-                         hash: 'sha1', 
-                         serviceLabel: 'MBO', 
-                         debug: false } );
-
-  credentials = { accessKeyId: opts.accessKeyId, 
-                  accessKeySecret: opts.accessKeySecret };
 
   http_options = {
       host: opts.remoteHost,
@@ -24,7 +16,6 @@ init = function() {
       headers: {
           'Content-Type': 'application/json',
       }
-      //'Content-MD5': 'ee930827ccb58cd846ca31af5faa3634'
   };
   log.setDebug(false);
 }
@@ -49,9 +40,8 @@ doReq = function(method, entity, id, data, cb) {
     http_options.path += '/'+id;
   }
   http_options.method = method;
-  signedOptions = ofuda.signHttpRequest(credentials, http_options);
 
-  var req = httpClient.request(signedOptions, function(res) {
+  var req = httpClient.request(http_options, function(res) {
     res.setEncoding('utf8');
     var body = "";
     res.on('data', function(chunk) {
@@ -95,6 +85,14 @@ backup = function(cb) {
   });
 }
 
+restore = function(cb) {
+  checkInit(function() {
+    doReq('POST', 'restore', null, null, function(res) {
+      cb(true);
+    });
+  });
+}
+
 listBackups = function(key) {
   checkInit(function() {
 
@@ -122,6 +120,7 @@ QRImageLink = function(key, cb) {
 }
 
 exports.backup = backup;
+exports.restore = restore;
 exports.listBackups = listBackups;
 exports.backupStatus = backupStatus;
 exports.generalStatus = generalStatus;

@@ -1,7 +1,5 @@
 {
   "dir" : "data",
-  "accessKeyId" : "44CF9590006BF252F707",
-  "accessKeySecret": "OtxrzxIsfpFjA7SwPzILwy8Bw21TLhquhboDYROV",
   "remoteHost": "localhost",
   "remotePort": 9999,
   "keysDir":"keys"
