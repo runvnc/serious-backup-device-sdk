@@ -6,6 +6,8 @@
   "license": "MIT",
   "main": "serious.js",
   "dependencies": {
+    "qrcode-npm": "",
+    "bunyan": "",
     "should": "",
     "sinon": "",
     "ofuda":"git://github.com/Swizec/ofuda.git",

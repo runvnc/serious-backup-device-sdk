@@ -1,6 +1,10 @@
 var https = require('https')
   , path = require('path')
-  , log = require('./simplelog')
+  , qrCode = require('qrcode')
+  , bunyan = require('bunyan')
+  , log = bunyan.createLogger({name:'sdk'});
+
+log.level('debug');
 
 var opts = {}, http_options = {};
 
@@ -17,7 +21,6 @@ init = function() {
           'Content-Type': 'application/json',
       }
   };
-  log.setDebug(false);
 }
 
 config = function(options) {
@@ -95,7 +98,9 @@ restore = function(cb) {
 
 listBackups = function(key) {
   checkInit(function() {
-
+    doReq('GET', 'backups', null, null, function(res) {
+      cb(res);
+    });
   });    
 }
 
@@ -113,9 +118,12 @@ generalStatus = function(cb) {
   });
 }
 
-QRImageLink = function(key, cb) {
+QRImageTag = function(key, cb) {
   checkInit(function() {
-
+    var qr = qrCode.qrcode(4,'M');
+    qr.addData(key);
+    qr.make();
+    cb(qr.createImgTag(4));
   });
 }
 
@@ -124,7 +132,7 @@ exports.restore = restore;
 exports.listBackups = listBackups;
 exports.backupStatus = backupStatus;
 exports.generalStatus = generalStatus;
-exports.QRImageLink = QRImageLink;
+exports.QRImageTag = QRImageTag;
 exports.config = config;
 exports.readConfig = readConfig;
 
