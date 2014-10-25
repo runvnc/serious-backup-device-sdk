@@ -1,6 +1,6 @@
 var https = require('https')
   , path = require('path')
-  , qrCode = require('qrcode')
+  , qrCode = require('qrcode-npm')
   , bunyan = require('bunyan')
   , log = bunyan.createLogger({name:'sdk'});
 
@@ -96,7 +96,7 @@ restore = function(cb) {
   });
 }
 
-listBackups = function(key) {
+listBackups = function(cb) {
   checkInit(function() {
     doReq('GET', 'backups', null, null, function(res) {
       cb(res);
