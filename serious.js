@@ -83,14 +83,15 @@ checkInit = function(cb) {
 backup = function(cb) {
   checkInit(function() {
     doReq('POST', 'backup', null, null, function(res) {
-      cb(res.key);
+      log.debug(res, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& backup returns");
+      cb(res);
     });
   });
 }
 
-restore = function(cb) {
+restore = function(time, cb) {
   checkInit(function() {
-    doReq('POST', 'restore', null, null, function(res) {
+    doReq('POST', 'restore', time, null, function(res) {
       cb(true);
     });
   });
