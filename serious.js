@@ -32,7 +32,6 @@ readConfig = function(fname) {
   if (!fname) {
     fname = __dirname+'/config.json';
   }
-  log.debug("Client SDK reading config from " + path.resolve(fname));
   opts = require(fname);
   init();
 }
