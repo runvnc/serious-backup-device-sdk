@@ -1,3 +1,5 @@
+/* @flow weak */
+
 var https = require('https')
   , path = require('path')
   , qrCode = require('qrcode-npm')
@@ -82,7 +84,6 @@ checkInit = function(cb) {
 backup = function(cb) {
   checkInit(function() {
     doReq('POST', 'backup', null, null, function(res) {
-      log.debug(res, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& backup returns");
       cb(res);
     });
   });
